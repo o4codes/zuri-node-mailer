@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
+const validator = require('validator');
 const mailing = require('./services/mailing');
 require('dotenv').config();
 
@@ -22,8 +23,22 @@ app.post('/mails', (req, res) => {
         let { subject, body, to } = req.body;
         body = `<p>${body}</p>`;
 
+        if(!subject || !body || !to){
+            return res.status(400).send({
+                status: 'error',
+                message: 'Missing required fields'
+            });
+        }
+
+        if(!validator.isEmail(to)){
+            return res.status(400).send({
+                status: 'error',
+                message: 'Invalid email address'
+            });
+        }
+        
         mailing.send_email(subject, body, to);
-        res.status(200).send({
+        return res.status(200).send({
             status: 'success',
             message: 'Email sent'
         })
