@@ -14,10 +14,10 @@ let transporter = nodemailer.createTransport({
   });
 
 
-function send_email(subject, body, recipient) {
+function send_email(subject, body, to) {
     let mailOptions = {
-        from: 'oforkansi.shadrach@gmail.com',
-        to: recipient,
+        from: process.env.MAIL_USERNAME,
+        to: to,
         subject: subject,
         html: body
     };

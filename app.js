@@ -19,10 +19,10 @@ app.get('/', (req, res) => {
 
 app.post('/mails', (req, res) => {
     try{
-        let { subject, body, recipient } = req.body;
+        let { subject, body, to } = req.body;
         body = `<p>${body}</p>`;
 
-        mailing.send_email(subject, body, recipient);
+        mailing.send_email(subject, body, to);
         res.status(200).send({
             status: 'success',
             message: 'Email sent'
